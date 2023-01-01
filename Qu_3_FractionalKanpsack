@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include<stdlib.h>
+void int_swap(int arr[], int j)
+{
+    int temp = arr[j];
+    arr[j] = arr[j + 1];
+    arr[j + 1] = temp;
+}
+void doub_swap(double arr[], int j)
+{
+    double temp = arr[j];
+    arr[j] = arr[j + 1];
+    arr[j + 1] = temp;
+}
+void sortDescending(double perWeight[], int profit[], int weight[], int size)
+{
+    for (int i = 0; i < size - 1; i++)
+    {
+        for (int j = 0; j < size - 1 - i; j++)
+        {
+            if (perWeight[j] < perWeight[j + 1])
+            {
+                doub_swap(perWeight, j);
+                int_swap(profit, j);
+                int_swap(weight, j);
+            }
+        }
+    }
+}
+double FractionalKnapsack(int weight[], int profit[], double perWeight[], int W, int size)
+{
+    double maxProfit = 0;
+    for (int i = 0; i < size; i++)
+    {
+        if (W > 0 && weight[i] <= W)
+        {
+            maxProfit += (double)profit[i];
+            W -= weight[i];
+        }
+        else if (W > 0 && W < weight[i])
+        {
+            maxProfit += (double)((W)*perWeight[i]);
+            W -= weight[i];
+        }
+    }
+    return maxProfit;
+}
+int main()
+{
+    int profit[] = {60, 100, 120};
+    int weight[] = {10, 20, 30};
+    int W = 50;
+    int size = sizeof(profit) / sizeof(profit[0]);
+    double perWeight[size];
+    for (int i = 0; i < size; i++)
+    {
+        perWeight[i] = (double)profit[i] / weight[i];
+    }
+    sortDescending(perWeight, profit, weight, size);
+    printf("%.2f", FractionalKnapsack(weight, profit, perWeight, W, size));
+}
