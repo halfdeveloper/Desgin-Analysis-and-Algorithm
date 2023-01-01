@@ -1,0 +1,58 @@
+#include <stdio.h>
+int arr[100];
+//.......................................................//
+void adjust(int i, int n)
+{
+    int j = 2 * i, ele = arr[i];
+    while (j <= n)
+    {
+        if (j < n && arr[j] < arr[j + 1])
+            j++;
+        if (ele >= arr[j])
+            break;
+        else
+        {
+            arr[j / 2] = arr[j];
+            j = 2 * j;
+        }
+        arr[j / 2] = ele;
+    }
+}
+//..........................................................//
+
+void heapify(int n)
+{
+    int i;
+    for (i = n / 2; i >= 1; i--)
+        adjust(i, n);
+}
+//...........................................................//
+int main()
+{
+    int i, n, temp;
+    printf("enter no of element");
+    scanf("%d", &n);
+
+    printf("array  value enter");
+    for (i = 1; i <= n; i++)
+        scanf("%d", &arr[i]);
+
+    printf("\narray  is ");
+    for (i = 1; i <= n; i++)
+        printf(" %d", arr[i]);
+
+    heapify(n);
+    for (i = n; i >= 2; i--)
+    {
+        temp = arr[i];
+        arr[i] = arr[1];
+        arr[1] = temp;
+
+        adjust(1, i - 1);
+    }
+
+    printf("\narray after sort is ");
+    for (i = 1; i <= n; i++)
+        printf(" %d", arr[i]);
+    return 0;
+}
